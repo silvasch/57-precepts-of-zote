@@ -316,5 +316,4 @@ function newPrecept() {
   }, millisTillMidnight);
 }
 
-document.body.addEventListener("click", newPrecept);
 newPrecept();
