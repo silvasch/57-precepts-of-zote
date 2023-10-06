@@ -285,35 +285,21 @@ let precepts = [
   }
 ];
 
-function newPrecept() {
-  let preceptIndex = -1;
-  let precept = {};
-
-  while (true) {
-    preceptIndex = Math.floor(Math.random() * precepts.length);
-    precept = precepts[preceptIndex];
-
-    if (precept.header !== preceptHeader.innerHTML) {
-      break;
-    }
-  }
-
-  console.log(preceptIndex);
-  console.log(precept);
-
-  preceptHeader.innerHTML = precept.header;
-  preceptDesc.innerHTML = precept.desc;
-
-  var now = new Date();
-  var millisTillMidnight =
-    new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) -
-    now;
-  if (millisTillMidnight < 0) {
-    millisTillMidnight += 86400000;
-  }
-  setTimeout(() => {
-    newPrecept();
-  }, millisTillMidnight);
+function daysInYear(year) {
+    return ((year % 4 === 0 && year % 100 > 0) || year %400 == 0) ? 366 : 365;
 }
 
-newPrecept();
+function yearProgress() {
+    var firstDayOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
+    var firstDayOfNextYear = new Date(new Date().getFullYear() + 1, 0, 1).getTime();
+    const curDay = new Date().getTime();
+    return (curDay - firstDayOfYear) / (firstDayOfNextYear - firstDayOfYear);
+}
+
+let current_day = Math.floor(daysInYear(new Date().getFullYear()) * yearProgress())
+let preceptIndex = current_day % precepts.length;
+
+let precept = precepts[preceptIndex];
+
+preceptHeader.innerHTML = precept.header;
+preceptDesc.innerHTML = precept.desc;
